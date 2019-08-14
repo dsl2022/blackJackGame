@@ -2,14 +2,14 @@ import React from 'react';
 import './App.css';
 // import ControlBox from './ControlBox'
 import UserBox from './userBox'
-
+import HouseBox from './HouseBox'
 class App extends React.Component {
   state={
     deckId:'',
     houseValue:0,
-    userValue:0,
-    drawnCardData:{},
-    userCardImages:[]
+    userValue:0,    
+    userCardImages:[],
+    houseCardImage:[]
   }
   
   
@@ -33,22 +33,43 @@ class App extends React.Component {
 
     }
 
-   onDrawCard= async (deckId)=>{    
-    const response = await fetch(
-      `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=2`
-    )
-    const jsonData = await response.json()
-    // console.log(jsonData,'test')
-    this.setState({drawnCardData:jsonData,userCardImages:[...this.state.userCardImages,jsonData.cards[0].image,jsonData.cards[1].image]})
+    drawCards = async (deckId,count) =>{
+      const response = await fetch(
+        `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=${count}`        
+      )
+      return (!response.ok)?Promise.reject(response.json()):await response.json()
+    }
+
+    // start game, two cards are drawn for all players
+   onStartGame = async (deckId)=>{       
+    const jsonDataUser = await this.drawCards(deckId,2)
+    const jsonDataHouse = await this.drawCards(deckId,2)
+    
+    
+    this.setState({
+      userCardImages:[...this.state.userCardImages,
+        jsonDataUser.cards[0].image,
+        jsonDataUser.cards[1].image],
+      houseCardImage:[...this.state.houseCardImage,
+        jsonDataHouse.cards[0].image,
+        jsonDataHouse.cards[1].image
+        ]})
+        
   }
 
-  onDrawOneCard= async ()=>{
-    const response = await fetch(
-      `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=1`
-    )
-    const jsonData = await response.json()
-    this.setState({userCardImages:[...this.state.userCardImages,jsonData.cards[0].image]})
-    console.log(jsonData,'test draw one card')
+  onDrawOneCardUser = async ()=>{   
+    const jsonData = await this.drawCards(this.state.deckId,1)
+    this.setState({userCardImages
+        :[...this.state.userCardImages,
+        jsonData.cards[0].image]})  
+    this.onDrawOneCardHouse()      
+  }
+
+  onDrawOneCardHouse = async ()=>{
+    const jsonData = await this.drawCards(this.state.deckId,1)
+    this.setState({houseCardImage
+        :[...this.state.houseCardImage,
+        jsonData.cards[0].image]}) 
   }
 
   // onUpdateUserCardImages=()={
@@ -57,17 +78,20 @@ class App extends React.Component {
 
   render(){
     
-    console.log(this.state,'test drawcard data')
+    console.log(this.state,'test state')
     return (
       <div className="App">
        
-          <button onClick={this.onDrawCard}>Start</button>
-        <UserBox 
-          cardData={this.state.drawnCardData}
+          <button onClick={this.onStartGame}>Start</button>
+        <UserBox           
           updateUserVal={this.updateUserVal}
-          drawOneCard={this.onDrawOneCard}
-          userCardImages = {this.state.userCardImages}
+          drawOneCard={this.onDrawOneCardUser}
+          CardImages = {this.state.userCardImages}
         />
+        <HouseBox          
+          drawOneCard={this.onDrawOneCardUser}
+          CardImages = {this.state.houseCardImage}
+          />
       </div>
     )
   }
