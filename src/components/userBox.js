@@ -8,19 +8,19 @@ class UserBox extends React.Component{
   
   renderUserCard=(cardArray)=>{
     return cardArray.map((card,index)=>
-      <div key = {index} style={{ 
-        position:'absolute',           
-        left:`${index*40}px`
-        }} className='card-container user-cards'>        
-        <img src={card} alt={'user card '+index}/>
-      </div>
-    )
+    <div key = {index} style={{ 
+                 
+      left:`${index*20}px`
+      }} className='card'>        
+      <img src={card} alt={'user card '+index}/>
+    </div>)
+   
   }
 
   renderButton=()=>{
     return(
       <div className='user-btn-container'>
-        <button disabled={this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
+        <button disabled={this.props.isStand || this.props.isBusted} onClick={this.props.drawOneCard}>Hit</button>
         <button onClick={this.props.onStand}>Stand</button>
         <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button>
       </div>
@@ -39,15 +39,20 @@ class UserBox extends React.Component{
   render(){
     
     return(
-      <div className='user-box' >
-        <h2>You</h2>
-        {this.renderValue()}
-        <div style={{position:'relative'}}className='all-cards-container user-cards'>
-        {this.renderUserCard(this.props.CardImages)}        
+      <div className='user table-box' >
+        <div className='user-head-bar'>
+          <h2>You</h2>
+          
+          {this.renderValue()}
         </div>
-        <div style={{position:'relative'}}className='user-btn'>
+        
+             
+        <div className='all-cards-container'>
+        {this.renderUserCard(this.props.CardImages)}   
+      </div>
+        
           {this.props.isGameStarted && this.renderButton()}
-        </div>
+        
       </div>
     )
   }

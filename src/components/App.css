@@ -26,22 +26,52 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+ .table-box{
+  display:flex;
+  flex-direction: column;
+  
+  width:100%;
 }
+
 
 .all-cards-container{
   display:flex;
+  position:relative;
+  justify-content: center;
   flex-direction: row;
 }
+
 
 .game-frame{
   display:flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.card{
+  width:100px;
+  
+}
+
+
+@media(max-width:360px){
+  .game-frame{
+    display:flex;
+    flex-direction: column;
+    height:100vh;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table-box{
+    display:flex;
+    flex-direction: column;
+    height:100vh;
+    width:100%;
+    
+  }
+  img{
+    width: 100%;
+  }
+  
 }

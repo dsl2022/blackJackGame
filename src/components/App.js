@@ -8,13 +8,14 @@ class App extends React.Component {
     deckId:'',
     houseValue:0,
     userValue:0,    
-    userCardImages:[],
+    userCardImages:[], 
     userCardSplitHandImages:[],
     houseCardImage:[],
     isStandForUser:false,
-    isGameStarted:false,
-    isBlackJack:false,
-    aceCount:0
+    isGameStarted:false, 
+    isBlackJack:false, // those are derivative state, not a good practice. 
+    userAceCount:0, // need to redefine. 
+    isBusted:false,
   }
   
   
@@ -68,7 +69,7 @@ class App extends React.Component {
 
     resetGameState=()=>{
       this.setState({
-        
+        isBusted:false,
         houseValue:0,
         userValue:0,    
         userCardImages:[],
@@ -77,14 +78,13 @@ class App extends React.Component {
         isStandForUser:false,
         isGameStarted:false,
         isBlackJack:false,
-        aceCount:0,
+        userAceCount:0,
         isSplit:false,
       })
     }
 
 
-    onCheckSplit=(card_1,card_2)=>{
-      
+    onCheckSplit=(card_1,card_2)=>{      
       if(card_1===card_2){
         this.setState({isSplit:true})
       }
@@ -92,7 +92,7 @@ class App extends React.Component {
 
     onCheckIsAce=(card)=>{
       if(card===11){
-        this.setState({aceCount:this.state.aceCount+1})
+        this.setState({userAceCount:this.state.userAceCount+1})
       }
     }
 
@@ -127,9 +127,23 @@ class App extends React.Component {
         
   }
 
+  checkBust=(card)=>{
+    if(this.state.userAceCount > 0 ){
+      if(this.state.userValue-(this.state.userAceCount*10)
+        +card>21){
+          console.log(this.state.userValue-(this.state.userAceCount*10)
+          +card,'test user count with ace')
+      this.setState({isBusted:true})}
+        
+    }
+    else if(this.state.userValue+card>21){
+      this.setState({isBusted:true})
+    }
+  }
   onDrawOneCardUser = async ()=>{   
     const jsonData = await this.drawCards(this.state.deckId,1)
     const cardValue = this.carValueHandle(jsonData.cards[0].value)
+    this.checkBust(cardValue)
     this.setState({
         userCardImages
         :[...this.state.userCardImages,
@@ -179,7 +193,8 @@ class App extends React.Component {
           isSplitHandle = {this.updateIsSplit}
           isSplit = {this.state.isSplit}
           userValue = {this.state.userValue}
-          aceCount = {this.state.aceCount}
+          aceCount = {this.state.userAceCount}
+          isBusted = {this.state.isBusted}
         />
         <HouseBox
 
