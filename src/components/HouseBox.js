@@ -12,8 +12,11 @@ class HouseBox extends React.Component{
       render(){
         return(
           <div className='user-box' >
-            {this.renderUserCard()}
-            
+              <h2>Dealer</h2>
+              <h2>{this.props.houseValue}</h2>
+            <div className='all-cards-container house-cards'>
+                {this.renderUserCard()}
+            </div>
           </div>
         )
       }

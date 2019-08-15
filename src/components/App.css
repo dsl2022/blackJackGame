@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background:green;
+  
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -30,4 +33,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.all-cards-container{
+  display:flex;
+  flex-direction: row;
+}
+
+.game-frame{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
