@@ -41,12 +41,28 @@ class App extends React.Component {
     }
 
     // start game, two cards are drawn for all players
+
+    carValueHandle=(value)=>{
+      const specialValue = {'JACK':11,'QUEEN':12,'KING':13,'ACE':1}
+      
+      if(value in specialValue){
+        console.log(specialValue[value],'test speical')
+        return specialValue[value]
+      }else{
+        return Number(value)
+      }
+    }
+
    onStartGame = async (deckId)=>{       
     const jsonDataUser = await this.drawCards(deckId,2)
     const jsonDataHouse = await this.drawCards(deckId,2)
     
-    
+    const userInitialValue = this.carValueHandle(jsonDataUser.cards[0].value)+this.carValueHandle(jsonDataUser.cards[1].value)
+    const houseInitialValue = this.carValueHandle(jsonDataHouse.cards[0].value)+this.carValueHandle(jsonDataHouse.cards[1].value)
+    console.log(jsonDataUser,jsonDataHouse,'test data on start')
     this.setState({
+      userValue:userInitialValue,
+      houseValue:houseInitialValue,
       userCardImages:[...this.state.userCardImages,
         jsonDataUser.cards[0].image,
         jsonDataUser.cards[1].image],
@@ -59,26 +75,33 @@ class App extends React.Component {
 
   onDrawOneCardUser = async ()=>{   
     const jsonData = await this.drawCards(this.state.deckId,1)
-    this.setState({userCardImages
+    const cardValue = this.carValueHandle(jsonData.cards[0].value)
+    this.setState({
+        userCardImages
         :[...this.state.userCardImages,
-        jsonData.cards[0].image]})  
-    this.onDrawOneCardHouse()      
+        jsonData.cards[0].image],
+        userValue:this.state.userValue+cardValue
+        })  
+         
   }
 
   onDrawOneCardHouse = async ()=>{
     const jsonData = await this.drawCards(this.state.deckId,1)
+    const cardValue = this.carValueHandle(jsonData.cards[0].value)
     this.setState({houseCardImage
         :[...this.state.houseCardImage,
-        jsonData.cards[0].image]}) 
+        jsonData.cards[0].image],
+        houseValue:this.state.houseValue+cardValue}) 
   }
 
-  // onUpdateUserCardImages=()={
-
-  // }
+  onStand = ()=>{
+    this.onDrawOneCardHouse() 
+    console.log(this.state)
+  }
 
   render(){
     
-    console.log(this.state,'test state')
+    console.log(this.state.userValue,this.state.houseValue,'test user and house values')
     return (
       <div className="App">
        
@@ -87,8 +110,10 @@ class App extends React.Component {
           updateUserVal={this.updateUserVal}
           drawOneCard={this.onDrawOneCardUser}
           CardImages = {this.state.userCardImages}
+          onStand = {this.onStand}
         />
-        <HouseBox          
+        <HouseBox
+
           drawOneCard={this.onDrawOneCardUser}
           CardImages = {this.state.houseCardImage}
           />
