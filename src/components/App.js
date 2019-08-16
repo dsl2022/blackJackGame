@@ -5,7 +5,7 @@ import UserBox from './userBox'
 import HouseBox from './HouseBox'
 import cardApiServices from '../Services/CardService'
 import UserBetControl from './UserBetControl';
-import ErrorBoundary from './ErrorBoundary'
+
 
 
 class App extends React.Component {
@@ -112,10 +112,10 @@ class App extends React.Component {
     console.log(cardValue,'test card value')
     // this.userBustHandle(cardValue,this.state.userCardData)
     this.userBustHandle(cardValue,this.state.userCardData)
-    this.setState({
+    if(!this.state.isStandForUser){this.setState({
         userCardData:this.state.userCardData.concat(jsonData.cards),
         cardRemaining:Number(jsonData.remaining)
-      })
+      })}
     }
     catch(error){
       console.log(error)
@@ -151,7 +151,7 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-       <ErrorBoundary>
+       
           <button onClick={this.onStartGame}>Deal</button>
           <div className='game-frame'>
         <UserBox                     
@@ -176,7 +176,7 @@ class App extends React.Component {
             chip = {this.state.chip}
             onUpdateChip = {this.onUpdateChip}
           />
-          </ErrorBoundary>
+         
       </div>
     )
   }
