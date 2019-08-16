@@ -3,7 +3,7 @@ import cardApiServices from '../Services/CardService'
 
 
 class UserBox extends React.Component{
-  
+
   
 
   forcedStand=(userValue,aceCount)=>{
@@ -12,18 +12,18 @@ class UserBox extends React.Component{
 
   renderUserCard=(cardData)=>{
     return cardData.map((card,index)=>
-    <div key = {index} style={{ 
-                 
+    <div key = {index} style={{                  
       left:`${index*20}px`
-      }} className='card'>        
-      <img src={card.image} alt={'user card '+index}/>
+      }} className='card-container'>        
+      <img src={card.image} alt={'card image'+index}/>
     </div>)
    
   }
 
   onStand=()=>{
+   
     this.props.onStand()
-    return true
+   
   }
 
  
@@ -33,15 +33,12 @@ class UserBox extends React.Component{
     // console.log(Value,'test user value')
     return(
       <div className='user-btn-container'>
-        <button disabled={ this.forcedStand(userValue,aceCount)} onClick={this.props.drawOneCard}>Hit</button>
-        <button onClick={this.onStand}>Stand</button>
+        <button disabled={ this.forcedStand(userValue,aceCount) && this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
+        <button disabled = {this.forcedStand(userValue,aceCount)||this.props.isStand} onClick={this.onStand}>Stand</button>
         {/* <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button> */}
       </div>
     )
   }
-
-
-  
 
   renderValue=(userValue,aceCount)=>{
     if(aceCount>0){
@@ -54,9 +51,13 @@ class UserBox extends React.Component{
       return <h2>{userValue}</h2>
     }
   }
+
+  nothing=()=>{}
+
   render(){
     const userValue = cardApiServices.calculateCardValue(this.props.userCardData)
     const aceCount = cardApiServices.aceCount(this.props.userCardData)
+    // this.forcedStand(userValue,aceCount)?this.props.onStand():this.nothing()
     return(
       <div className='user table-box' >
         <div className='user-head-bar'>
