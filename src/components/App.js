@@ -3,41 +3,29 @@ import './App.css';
 // import ControlBox from './ControlBox'
 import UserBox from './userBox'
 import HouseBox from './HouseBox'
+import cardApiServices from '../Services/CardService'
 class App extends React.Component {
   state={
+    userCardData:[],
+    houseCardData:[],
     deckId:'',
-    houseValue:0,
-    userValue:0,    
-    userCardImages:[], 
-    userCardSplitHandImages:[],
-    houseCardImage:[],
+    houseValue:0,      
+    scores:{house:0,user:0},  
     isStandForUser:false,
     isGameStarted:false, 
     isBlackJack:false, // those are derivative state, not a good practice. 
-    userAceCount:0, // need to redefine. 
+    // userAceCount:0, // need to redefine. 
     isBusted:false,
   }
   
   
-  async componentDidMount(){   
-    
+  async componentDidMount(){       
     const response = await fetch(
       `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`
     )
-    const jsonData = await response.json()
-    
-    this.setState({deckId:jsonData.deck_id})
-     
-    
+    const jsonData = await response.json()    
+    this.setState({deckId:jsonData.deck_id})        
   }
-
-    onUpdateUserValue=()=>{
-
-    }
-
-    onUpdateHouseValue=()=>{
-
-    }
 
     drawCards = async (deckId,count) =>{
       const response = await fetch(
@@ -69,26 +57,20 @@ class App extends React.Component {
 
     resetGameState=()=>{
       this.setState({
+        userCardData:[],
+        houseCardData:[],
         isBusted:false,
-        houseValue:0,
-        userValue:0,    
-        userCardImages:[],
-        userCardSplitHandImages:[],
-        houseCardImage:[],
+        houseValue:0,                   
         isStandForUser:false,
         isGameStarted:false,
         isBlackJack:false,
-        userAceCount:0,
+        // userAceCount:0,
         isSplit:false,
       })
     }
 
 
-    onCheckSplit=(card_1,card_2)=>{      
-      if(card_1===card_2){
-        this.setState({isSplit:true})
-      }
-    }
+   
 
     onCheckIsAce=(card)=>{
       if(card===11){
@@ -101,28 +83,30 @@ class App extends React.Component {
       this.resetGameState()
     }
 
-    const jsonDataUser = await this.drawCards(deckId,2)
-    const jsonDataHouse = await this.drawCards(deckId,1)
+    const jsonDataUser = await cardApiServices.drawCards(this.state.deckId,2)
+    const jsonDataHouse = await cardApiServices.drawCards(this.state.deckId,2)
     
-    const userCard_1 = this.carValueHandle(jsonDataUser.cards[0].value)
-    const userCard_2 = this.carValueHandle(jsonDataUser.cards[1].value)
+    const userCard_1 = cardApiServices.carValueHandle(jsonDataUser.cards[0].value)
+    const userCard_2 = cardApiServices.carValueHandle(jsonDataUser.cards[1].value)
     
-    const userInitialValue = userCard_1+userCard_2
-    const houseInitialValue = this.carValueHandle(jsonDataHouse.cards[0].value)
+ 
+    const houseInitialValue = cardApiServices.carValueHandle(jsonDataHouse.cards[0].value)
     // console.log(jsonDataUser,jsonDataHouse,'test data on start')
     this.checkBlackJack(userCard_1,userCard_2)    
-    this.onCheckSplit(userCard_1,userCard_2)
+    // this.onCheckSplit(userCard_1,userCard_2)
     this.onCheckIsAce(userCard_1)
     this.onCheckIsAce(userCard_2)
     this.setState({
-      userValue:userInitialValue,
+      userCardData:jsonDataUser.cards,
+      houseCardData:jsonDataHouse.cards,
+     
       houseValue:houseInitialValue,
-      userCardImages:[...this.state.userCardImages,
-        jsonDataUser.cards[0].image,
-        jsonDataUser.cards[1].image],
-      houseCardImage:[...this.state.houseCardImage,
-        jsonDataHouse.cards[0].image,        
-        ],
+      // userCardImages:[...this.state.userCardImages,
+      //   jsonDataUser.cards[0].image,
+      //   jsonDataUser.cards[1].image],
+      // houseCardImage:[...this.state.houseCardImage,
+      //   jsonDataHouse.cards[0].image,        
+      //   ],
         isGameStarted:true})
         
   }
@@ -141,24 +125,27 @@ class App extends React.Component {
     }
   }
   onDrawOneCardUser = async ()=>{   
-    const jsonData = await this.drawCards(this.state.deckId,1)
-    const cardValue = this.carValueHandle(jsonData.cards[0].value)
+    const jsonData = await cardApiServices.drawCards(this.state.deckId,1)
+    const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
     this.checkBust(cardValue)
     this.setState({
-        userCardImages
-        :[...this.state.userCardImages,
-        jsonData.cards[0].image],
-        userValue:this.state.userValue+cardValue
+        userCardData:this.state.userCardData.concat(jsonData.cards),
+        // userCardImages
+        // :[...this.state.userCardImages,
+        // await jsonData.cards[0].image],
+        // userValue:this.state.userValue+cardValue
         })  
          
   }
 
   onDrawOneCardHouse = async ()=>{
     const jsonData = await this.drawCards(this.state.deckId,1)
-    const cardValue = this.carValueHandle(jsonData.cards[0].value)
-    this.setState({houseCardImage
-        :[...this.state.houseCardImage,
-        jsonData.cards[0].image],
+    const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
+    this.setState({
+        houseCardData:this.state.houseCardData.concat(await jsonData.cards),
+        // houseCardImage
+        // :[...this.state.houseCardImage,
+        // jsonData.cards[0].image],
         houseValue:this.state.houseValue+cardValue}) 
   }
 
@@ -166,7 +153,7 @@ class App extends React.Component {
    
     this.setState({isStandForUser:true})
     
-    while(this.state.houseValue<16){      
+    while(this.state.houseValue<21){      
       await this.onDrawOneCardHouse(); 
     }
   }
@@ -184,23 +171,24 @@ class App extends React.Component {
           <button onClick={this.onStartGame}>Start</button>
           <div className='game-frame'>
         <UserBox           
-          updateUserVal={this.updateUserVal}
-          drawOneCard={this.onDrawOneCardUser}
-          CardImages = {this.state.userCardImages}
+          // updateUserVal={this.updateUserVal}
+          drawOneCard={this.onDrawOneCardUser}         
           onStand = {this.onStand}
-          isStand = {this.state.isStandForUser}
+          // isStand = {this.state.isStandForUser}
           isGameStarted = {this.state.isGameStarted}
-          isSplitHandle = {this.updateIsSplit}
-          isSplit = {this.state.isSplit}
-          userValue = {this.state.userValue}
-          aceCount = {this.state.userAceCount}
-          isBusted = {this.state.isBusted}
+          // isSplitHandle = {this.updateIsSplit}
+          // isSplit = {this.state.isSplit}
+          // userValue = {this.state.userValue}
+          // aceCount = {this.state.userAceCount}
+          // isBusted = {this.state.isBusted}
+          userCardData = {this.state.userCardData}
         />
         <HouseBox
 
           drawOneCard={this.onDrawOneCardUser}
           CardImages = {this.state.houseCardImage}
           houseValue = {this.state.houseValue}
+          houseCardData={this.state.houseCardData}
           />
           </div>
       </div>

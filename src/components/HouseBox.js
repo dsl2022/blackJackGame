@@ -2,14 +2,14 @@ import React from 'react'
 
 class HouseBox extends React.Component{
     renderUserCard=()=>{
-        return this.props.CardImages.map((card,index)=>
+        return this.props.houseCardData.map((card,index)=>
           <div key = {index} 
           style={{ 
             // position:'absolute',           
             left:`${index*20}px`
             }}
           className='house-card-container card'>        
-            <img src={card} alt={'user card '+index}/>
+            <img src={card.image} alt={'user card '+index}/>
           </div>
         )
       }
