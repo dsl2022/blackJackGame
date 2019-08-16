@@ -29,10 +29,10 @@ class HouseBox extends React.Component{
       }
 
       handleHouseDraw=()=>{
-        // console.log(value,'before test value') 
+        console.log('handle house draw') 
         
         
-           
+                
                 this.props.drawOneCard()
                 // value+=cardApiServices.calculateCardValue(this.props.houseCardData)
                 
@@ -66,10 +66,11 @@ class HouseBox extends React.Component{
         
         // console.log((houseData.length&&cardApiServices.calculateCardValue(houseData[houseData.length-1])),'test before draw house')
         // console.log(houseValue<16,'test true value')
-        console.log(houseValue,'before')
-        if(this.props.isUserStand&&(houseValue-(aceCount*10)<16)){
-            console.log(houseValue,'after')
-            console.log(houseValue-(aceCount*10),'calculation')
+        console.log(houseData,'test data')
+        console.log(houseValue-(aceCount*10),'before')
+        if(this.props.isUserStand&&((houseValue-(aceCount*10))<16)){
+            console.log(houseValue-(aceCount*10),'after')
+            
             this.handleHouseDraw()
             
         }

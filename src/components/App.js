@@ -7,6 +7,7 @@ import cardApiServices from '../Services/CardService'
 import UserBetControl from './UserBetControl';
 import ErrorBoundary from './ErrorBoundary'
 
+
 class App extends React.Component {
   state={
     chip:500,
@@ -17,15 +18,17 @@ class App extends React.Component {
     isStandForUser:false,
     isGameStarted:false, 
     isBlackJack:false, // those are derivative state, not a good practice. 
+    cardRemaining:0
   }
   
   
   async componentDidMount(){       
     const response = await fetch(
-      `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`
+      `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6`
     )
     const jsonData = await response.json()    
-    this.setState({deckId:jsonData.deck_id})        
+    this.setState({deckId:jsonData.deck_id,
+                    cardRemaining:Number(jsonData.remaining)})        
   }
 
  
@@ -58,21 +61,29 @@ class App extends React.Component {
     if(this.state.isGameStarted){
       this.resetGameState()
     }
-
-    const jsonDataUser = await cardApiServices.drawCards(this.state.deckId,2)
-    const jsonDataHouse = await cardApiServices.drawCards(this.state.deckId,1)    
-    const userCard_1 = cardApiServices.carValueHandle(jsonDataUser.cards[0].value)
-    const userCard_2 = cardApiServices.carValueHandle(jsonDataUser.cards[1].value)
-     
-    // const houseInitialValue = cardApiServices.carValueHandle(jsonDataHouse.cards[0].value)    
-    this.checkBlackJack(userCard_1,userCard_2)    
-    this.onCheckIsAce(userCard_1)
-    this.onCheckIsAce(userCard_2)
-    this.setState({
-      userCardData:jsonDataUser.cards,
-      houseCardData:jsonDataHouse.cards,     
-      // houseValue:houseInitialValue,
-      isGameStarted:true})
+    try{
+      const jsonDataUser = await cardApiServices.drawCards(this.state.deckId,2)
+      const jsonDataHouse = await cardApiServices.drawCards(this.state.deckId,1)    
+      const userCard_1 = cardApiServices.carValueHandle(jsonDataUser.cards[0].value)
+      const userCard_2 = cardApiServices.carValueHandle(jsonDataUser.cards[1].value)
+       
+      // const houseInitialValue = cardApiServices.carValueHandle(jsonDataHouse.cards[0].value)    
+      this.checkBlackJack(userCard_1,userCard_2)    
+      this.onCheckIsAce(userCard_1)
+      this.onCheckIsAce(userCard_2)
+      this.setState({
+        userCardData:jsonDataUser.cards,
+        houseCardData:jsonDataHouse.cards,     
+        // houseValue:houseInitialValue,
+        cardRemaining:Number(jsonDataHouse.remaining),
+        isGameStarted:true})
+    }catch(error){
+      console.log(error)
+      window.location.reload(true)
+      
+      
+    }
+    
         
   }
 
@@ -94,20 +105,29 @@ class App extends React.Component {
   }
   
 
-  onDrawOneCardUser = async ()=>{   
-    const jsonData = await cardApiServices.drawCards(this.state.deckId,1)
+  onDrawOneCardUser = async ()=>{  
+    try{
+      const jsonData = await cardApiServices.drawCards(this.state.deckId,1)
     const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
     console.log(cardValue,'test card value')
     // this.userBustHandle(cardValue,this.state.userCardData)
-    this.onCheckBusted(cardValue)
+    this.userBustHandle(cardValue,this.state.userCardData)
     this.setState({
         userCardData:this.state.userCardData.concat(jsonData.cards),
-      })           
+        cardRemaining:Number(jsonData.remaining)
+      })
+    }
+    catch(error){
+      console.log(error)
+    } 
+    
+               
     }
 
   onDrawOneCardHouse = async ()=>{
     const jsonData = await cardApiServices.drawCards(this.state.deckId,1)
     // const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
+    console.log(jsonData.cards,'test card value inside on draw house')
     this.setState({
       houseCardData:this.state.houseCardData.concat(jsonData.cards),
       // houseValue:this.state.houseValue+cardValue
@@ -119,9 +139,16 @@ class App extends React.Component {
     this.setState({isStandForUser:true})               
   }
 
+  onUpdateChip=(chip)=>{
+    this.setState({chip:chip})
+  }
  
   render(){
-    console.log(this.state,'test state')    
+    console.log(this.state,'test state') 
+    console.log(this.props,'test props')   
+    if(this.state.cardRemaining<10){
+      cardApiServices.shuffleCard(this.state.deckId)
+    }
     return (
       <div className="App">
        <ErrorBoundary>
@@ -146,6 +173,8 @@ class App extends React.Component {
           <UserBetControl 
             userCardData={this.state.userCardData}
             houseCardData={this.state.houseCardData}
+            chip = {this.state.chip}
+            onUpdateChip = {this.onUpdateChip}
           />
           </ErrorBoundary>
       </div>

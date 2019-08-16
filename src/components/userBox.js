@@ -33,7 +33,7 @@ class UserBox extends React.Component{
     // console.log(Value,'test user value')
     return(
       <div className='user-btn-container'>
-        <button disabled={ this.forcedStand(userValue,aceCount) && this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
+        <button disabled={ this.forcedStand(userValue,aceCount) || this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
         <button disabled = {this.forcedStand(userValue,aceCount)||this.props.isStand} onClick={this.onStand}>Stand</button>
         {/* <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button> */}
       </div>

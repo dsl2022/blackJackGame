@@ -1,5 +1,11 @@
 const cardApiServices={
-
+    async shuffleCard(deckId){
+      try{
+        await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
+      }catch(error){
+        console.log(error)
+      }
+    },
     async drawCards(deckId,count){
         try {const response = await fetch(
           `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${count}`        
@@ -53,6 +59,7 @@ const cardApiServices={
       onCheckBusted(cardValue,cardData){
         const currentValue = cardApiServices.calculateCardValue(cardData)
         const maxValue = currentValue+cardValue-(cardApiServices.aceCount(cardData)*10)        
+        console.log(currentValue,'current t',maxValue,'max t')
         return maxValue>21                  
       }
       
