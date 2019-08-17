@@ -11,6 +11,7 @@ import './GameFrame.css'
 class GameFrame extends React.Component {
   state={
     chip:500,
+    chipBetRecord:[],
     userCardData:[],
     houseCardData:[],
     deckId:'',
@@ -66,13 +67,11 @@ class GameFrame extends React.Component {
     try{
       const jsonDataUser = await cardApiServices.drawCards(this.state.deckId,2)
       const jsonDataHouse = await cardApiServices.drawCards(this.state.deckId,1)    
-      const userCard_1 = cardApiServices.carValueHandle(jsonDataUser.cards[0].value)
-      const userCard_2 = cardApiServices.carValueHandle(jsonDataUser.cards[1].value)
-       
-      // const houseInitialValue = cardApiServices.carValueHandle(jsonDataHouse.cards[0].value)    
-      // this.checkBlackJack(userCard_1,userCard_2)    
-      this.onCheckIsAce(userCard_1)
-      this.onCheckIsAce(userCard_2)
+      // const userCard_1 = cardApiServices.carValueHandle(jsonDataUser.cards[0].value)
+      // const userCard_2 = cardApiServices.carValueHandle(jsonDataUser.cards[1].value)
+         
+      // this.onCheckIsAce(userCard_1)
+      // this.onCheckIsAce(userCard_2)
       this.setState({
         userCardData:jsonDataUser.cards,
         houseCardData:jsonDataHouse.cards,     
@@ -81,12 +80,8 @@ class GameFrame extends React.Component {
         isGameStarted:true})
     }catch(error){
       console.log(error)
-      window.location.reload(true)
-      
-      
+      window.location.reload(true)            
     }
-    
-        
   }
 
  

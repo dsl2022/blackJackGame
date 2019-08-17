@@ -1,5 +1,9 @@
 import React from 'react'
 import cardApiServices from '../../Services/CardService'
+import chip_20 from '../../assets/chip-20.png'
+import chip_50 from '../../assets/chip-50.png'
+import chip_100 from '../../assets/chip-100.png'
+import double from '../../assets/double-down.png'
 import './UserBetControl.css'
 class WinnerDisplay extends React.Component{
     onBlackJackUser=()=>{
@@ -61,6 +65,14 @@ class WinnerDisplay extends React.Component{
                 <div className='play score-box'>               
                 <h2>You: </h2> {this.renderValue(userValue,userAceCount)}
                </div>
+
+              <div className='chips-box'>
+                <input type="image" alt ='' src={chip_20} name="test" class="btTxt submit" id="chip" /> 
+                <input type="image" alt ='' src={chip_50} name="test" class="btTxt submit" id="chip" />  
+                <input type="image" alt ='' src={chip_100} name="test" class="btTxt submit" id="chip" />  
+                <input type="image" alt ='' src={double} name="test" class="btTxt submit" id="chip-double" />  
+              </div>
+
                <div className='dealer score-box'>               
                <h2>Dealer: </h2> {this.renderValue(houseValue,houseAceCount)}
               </div>

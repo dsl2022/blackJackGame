@@ -1,15 +1,20 @@
 .winner-display-container{
     color:white;
     display:flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     background-color:black;
     height:100%;
 }
 
+input[type='image'] {
+    width: 80px;
+}
 .score-display{
     display:flex;
-    flex-direction: column;
-    /* justify-content: center; */
+    flex-direction: row;
+    width:100%;
+    justify-content: space-around;
 }
 .score-box{
     display:flex;
@@ -19,4 +24,18 @@
 .chip-display{
     display:flex;
     flex-direction: row;
+    justify-content: center;
+}
+
+.chips-box{
+    padding:10px;
+}
+#chip-double{
+    margin-left:10px;
+}
+
+@media(max-width:320px){
+    .score-display{
+        flex-direction: column;
+    }
 }
