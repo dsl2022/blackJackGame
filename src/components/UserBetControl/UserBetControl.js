@@ -21,11 +21,12 @@ class WinnerDisplay extends React.Component{
         // const userValue = cardApiServices.calculateCardValue(this.props.userCardData);
         // console.log(Value,'test user value')
         return(
-          <div className='user-btn-container'>
+          <>
             <button disabled={ this.onBlackJack() || this.forcedStand(userValue,aceCount) || this.props.isUserStand} onClick={this.props.drawOneCard}>Hit</button>
             <button disabled = { this.onBlackJack() || this.forcedStand(userValue,aceCount)||this.props.isUserStand} onClick={this.onStand}>Stand</button>
             {/* <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button> */}
-          </div>
+          </>
+
         )
       }
       onStand=()=>{
@@ -57,11 +58,15 @@ class WinnerDisplay extends React.Component{
         return(
             <div className='winner-display-container'>
               <div className='score-display'>
-                {this.renderValue(userValue,userAceCount)}
-                {this.renderValue(houseValue,houseAceCount)}
+                <div className='play score-box'>               
+                <h2>You: </h2> {this.renderValue(userValue,userAceCount)}
+               </div>
+               <div className='dealer score-box'>               
+               <h2>Dealer: </h2> {this.renderValue(houseValue,houseAceCount)}
+              </div>
               </div>
                 <div className='chip-display'>
-                    {this.props.chip}
+                <h2>Chip total: </h2> <h2>{this.props.chip}</h2>
                 </div>
             <div className='winner-buster-display'>
                 {userValue-userAceCount*10>21&&'Bust, you lost'}
@@ -71,10 +76,13 @@ class WinnerDisplay extends React.Component{
                 
                 {this.onBlackJackUser() && 'Black Jack! You Won'}
                 
-            </div>    
+            </div>   
+            <div className='user-btn-container'> 
+            <button onClick={this.props.onStartGame}>Deal</button>
             {this.props.isGameStarted && this.renderButton(userValue,userAceCount)}
             {/* Users: {userValue}
             Dealer: {houseValue} */}
+            </div>
             </div>
         )
     }

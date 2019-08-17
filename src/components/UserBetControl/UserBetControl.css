@@ -5,3 +5,18 @@
     background-color:black;
     height:100%;
 }
+
+.score-display{
+    display:flex;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+.score-box{
+    display:flex;
+    flex-direction: row;
+}
+
+.chip-display{
+    display:flex;
+    flex-direction: row;
+}

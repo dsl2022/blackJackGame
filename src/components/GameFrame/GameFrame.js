@@ -163,7 +163,7 @@ class GameFrame extends React.Component {
     return (
       <div className="App">
     
-          <button onClick={this.onStartGame}>Deal</button>
+          {/* <button onClick={this.onStartGame}>Deal</button> */}
           <div className='game-frame'>
         <UserBox                     
           drawOneCard={this.onDrawOneCardUser}         
@@ -192,6 +192,7 @@ class GameFrame extends React.Component {
             isHouseFinished={this.state.houseFinished}
             onStand = {this.onStand}          
             isGameStarted = {this.state.isGameStarted}  
+            onStartGame = {this.onStartGame}
           />
           
       </div>
