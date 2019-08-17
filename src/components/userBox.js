@@ -24,13 +24,9 @@ class UserBox extends React.Component{
    
   }
 
-  onStand=()=>{
-   
-    this.props.onStand()
-   
+  onStand=()=>{   
+    this.props.onStand()   
   }
-
- 
 
   renderButton=(userValue,aceCount)=>{
     // const userValue = cardApiServices.calculateCardValue(this.props.userCardData);
@@ -44,40 +40,25 @@ class UserBox extends React.Component{
     )
   }
 
-  renderValue=(userValue,aceCount)=>{
-    if(aceCount>0){
-      return(
-        
-        // <h2>{this.props.userValue}/{this.props.userValue-this.props.aceCount*10}</h2>
-        <h2>{userValue}/{userValue-aceCount*10}</h2>
-      )
-    }else{
-      return <h2>{userValue}</h2>
-    }
-  }
-
   nothing=()=>{}
 
-  render(){
-    const userValue = cardApiServices.calculateCardValue(this.props.userCardData)
-    const aceCount = cardApiServices.aceCount(this.props.userCardData)
-    // this.forcedStand(userValue,aceCount)?this.props.onStand():this.nothing()
+  render(){    
     console.log(this.props.userCardData,this.props.userCardData[0],'black jack card test')
     console.log(cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.userCardData[1]),'test black jack')
     return(
       <div className='user table-box' >
-        <div className='user-head-bar'>
+        {/* <div className='head-bar'>
           <h2>You</h2>
           
           {this.renderValue(userValue,aceCount)}
-        </div>
+        </div> */}
         
              
         <div className='all-cards-container'>
         {this.renderUserCard(this.props.userCardData)}   
       </div>
         
-          {this.props.isGameStarted && this.renderButton(userValue,aceCount)}
+          {/* {this.props.isGameStarted && this.renderButton(userValue,aceCount)} */}
         
       </div>
     )

@@ -1,6 +1,6 @@
 import React from 'react'
-import cardApiServices from '../Services/CardService'
-
+import cardApiServices from '../../Services/CardService'
+import './UserBetControl.css'
 class WinnerDisplay extends React.Component{
     onBlackJackUser=()=>{
         return cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.userCardData[1])
@@ -9,8 +9,40 @@ class WinnerDisplay extends React.Component{
     // onBlackJackHouse=()=>{
     //     return cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.houseCardData[1])
     // }
-    
 
+  forcedStand=(userValue,aceCount)=>{
+    return (userValue-aceCount*10>21)    
+  }
+
+  onBlackJack=()=>{
+    return cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.userCardData[1])
+  }
+    renderButton=(userValue,aceCount)=>{
+        // const userValue = cardApiServices.calculateCardValue(this.props.userCardData);
+        // console.log(Value,'test user value')
+        return(
+          <div className='user-btn-container'>
+            <button disabled={ this.onBlackJack() || this.forcedStand(userValue,aceCount) || this.props.isUserStand} onClick={this.props.drawOneCard}>Hit</button>
+            <button disabled = { this.onBlackJack() || this.forcedStand(userValue,aceCount)||this.props.isUserStand} onClick={this.onStand}>Stand</button>
+            {/* <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button> */}
+          </div>
+        )
+      }
+      onStand=()=>{
+   
+        this.props.onStand()
+       
+      }
+
+      renderValue=(userValue,aceCount)=>{
+        if(aceCount>0){
+          return(                       
+            <h2>{userValue}/{userValue-aceCount*10}</h2>
+          )
+        }else{
+          return <h2>{userValue}</h2>
+        }
+      }
     render(){
         let userValue = cardApiServices.calculateCardValue(this.props.userCardData)
         let houseValue = cardApiServices.calculateCardValue(this.props.houseCardData)
@@ -24,6 +56,10 @@ class WinnerDisplay extends React.Component{
         console.log(this.onBlackJackUser(), 'Black Jack! You Won check inside usercontrol')
         return(
             <div className='winner-display-container'>
+              <div className='score-display'>
+                {this.renderValue(userValue,userAceCount)}
+                {this.renderValue(houseValue,houseAceCount)}
+              </div>
                 <div className='chip-display'>
                     {this.props.chip}
                 </div>
@@ -36,7 +72,7 @@ class WinnerDisplay extends React.Component{
                 {this.onBlackJackUser() && 'Black Jack! You Won'}
                 
             </div>    
-            
+            {this.props.isGameStarted && this.renderButton(userValue,userAceCount)}
             {/* Users: {userValue}
             Dealer: {houseValue} */}
             </div>

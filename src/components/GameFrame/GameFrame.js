@@ -4,7 +4,7 @@ import React from 'react';
 import UserBox from '../userBox'
 import HouseBox from '../HouseBox'
 import cardApiServices from '../../Services/CardService'
-import UserBetControl from '../UserBetControl';
+import UserBetControl from '../UserBetControl/UserBetControl';
 import './GameFrame.css'
 
 
@@ -183,13 +183,15 @@ class GameFrame extends React.Component {
           />          
           </div>
           <UserBetControl 
+          drawOneCard={this.onDrawOneCardUser} 
             userCardData={this.state.userCardData}
             houseCardData={this.state.houseCardData}
             chip = {this.state.chip}
             isUserStand={this.state.isStandForUser}
             onUpdateChip = {this.onUpdateChip}
             isHouseFinished={this.state.houseFinished}
-
+            onStand = {this.onStand}          
+            isGameStarted = {this.state.isGameStarted}  
           />
           
       </div>

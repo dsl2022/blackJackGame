@@ -83,10 +83,10 @@ class HouseBox extends React.Component{
         
         return(
           <div className='house table-box' >
-              <div className='user-head-bar'>
+              {/* <div className='head-bar'>
               <h2>Dealer</h2>
               {this.renderValue(houseValue,aceCount)}
-              </div>
+              </div> */}
             <div className='all-cards-container'>
                 {this.renderUserCard(houseData)}
             </div>
