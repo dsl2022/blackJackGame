@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './components/App';
-import ErrorBoundary from './components/ErrorBoundary'
+import App from './components/GameFrame/GameFrame';
+import {BrowserRouter} from 'react-router-dom'
 
 ReactDOM.render(
-    <ErrorBoundary>
-    <App />
-    </ErrorBoundary>, document.getElementById('root'));
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>       
+    , document.getElementById('root'));
 

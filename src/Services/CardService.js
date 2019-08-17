@@ -40,7 +40,16 @@ const cardApiServices={
         return count
       },
       checkBlackJack(card_1,card_2){      
-        return card_1+card_2===21
+        if(card_1 === undefined || card_1.length === 0)
+        {
+          return 
+        }else{
+          return this.carValueHandle(card_1.value)+this.carValueHandle(card_2.value)===21
+        }
+        // try{return this.carValueHandle(card_1.value)+this.carValueHandle(card_2.value)===21}
+        // catch(error){
+        //   console.log(error)
+        // }
       },
       onCheckSplit(card_1,card_2){      
         if(card_1===card_2){
@@ -61,6 +70,12 @@ const cardApiServices={
         const maxValue = currentValue+cardValue-(cardApiServices.aceCount(cardData)*10)        
         console.log(currentValue,'current t',maxValue,'max t')
         return maxValue>21                  
+      },
+      busted(cardData){
+        if(!cardData){
+          return
+        }else
+        {return cardApiServices.calculateCardValue(cardData)>21}
       }
       
 }

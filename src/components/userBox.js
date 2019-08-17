@@ -10,6 +10,10 @@ class UserBox extends React.Component{
     return (userValue-aceCount*10>21)    
   }
 
+  onBlackJack=()=>{
+    return cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.userCardData[1])
+  }
+
   renderUserCard=(cardData)=>{
     return cardData.map((card,index)=>
     <div key = {index} style={{                  
@@ -33,8 +37,8 @@ class UserBox extends React.Component{
     // console.log(Value,'test user value')
     return(
       <div className='user-btn-container'>
-        <button disabled={ this.forcedStand(userValue,aceCount) || this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
-        <button disabled = {this.forcedStand(userValue,aceCount)||this.props.isStand} onClick={this.onStand}>Stand</button>
+        <button disabled={ this.onBlackJack() || this.forcedStand(userValue,aceCount) || this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
+        <button disabled = { this.onBlackJack() || this.forcedStand(userValue,aceCount)||this.props.isStand} onClick={this.onStand}>Stand</button>
         {/* <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button> */}
       </div>
     )
@@ -58,6 +62,8 @@ class UserBox extends React.Component{
     const userValue = cardApiServices.calculateCardValue(this.props.userCardData)
     const aceCount = cardApiServices.aceCount(this.props.userCardData)
     // this.forcedStand(userValue,aceCount)?this.props.onStand():this.nothing()
+    console.log(this.props.userCardData,this.props.userCardData[0],'black jack card test')
+    console.log(cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.userCardData[1]),'test black jack')
     return(
       <div className='user table-box' >
         <div className='user-head-bar'>

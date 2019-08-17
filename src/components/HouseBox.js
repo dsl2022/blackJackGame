@@ -72,9 +72,14 @@ class HouseBox extends React.Component{
             console.log(houseValue-(aceCount*10),'after')
             
             this.handleHouseDraw()
-            
+           
         }
-        // this.props.isUserStand&&cardApiServices.calculateCardValue(houseData)<16?this.handleHouseDraw():this.nothing()
+        
+        // else{
+        //     this.props.onHouseFinished()
+        // }
+        // ((this.props.isUserStand&&(houseValue-(aceCount*10)))<16)
+        // ?this.handleHouseDraw():this.props.onHouseFinished()
         
         return(
           <div className='house table-box' >
