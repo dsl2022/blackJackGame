@@ -31,6 +31,9 @@ class UserBox extends React.Component{
   renderButton=(userValue,aceCount)=>{
     // const userValue = cardApiServices.calculateCardValue(this.props.userCardData);
     // console.log(Value,'test user value')
+    if(this.forcedStand()){
+      this.onStand()
+    }
     return(
       <div className='user-btn-container'>
         <button disabled={ this.onBlackJack() || this.forcedStand(userValue,aceCount) || this.props.isStand} onClick={this.props.drawOneCard}>Hit</button>
