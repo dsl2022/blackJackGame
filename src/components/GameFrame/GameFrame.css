@@ -44,12 +44,12 @@
   }
   
   
-  @media(max-width:360px){
+  @media(max-width:375px){
     .game-frame{
       display:flex;
       flex-direction: column;
-      height:100vh;
-      justify-content: space-between;
+      min-height:70vh;
+      justify-content: space-around;
       align-items: center;
     }
   .all-cards-container{
@@ -58,7 +58,7 @@
     .table-box{
       display:flex;
       flex-direction: column;
-      height:100vh;
+     
    
       
     }
@@ -71,3 +71,5 @@
     }
     
   }
+
+ 

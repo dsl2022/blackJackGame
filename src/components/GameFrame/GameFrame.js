@@ -1,6 +1,4 @@
 import React from 'react';
-
-// import ControlBox from './ControlBox'
 import UserBox from '../userBox'
 import HouseBox from '../HouseBox'
 import cardApiServices from '../../Services/CardService'
@@ -15,15 +13,13 @@ class GameFrame extends React.Component {
     userCardData:[],
     houseCardData:[],
     deckId:'',
-    houseFinished:false,
-    // houseValue:0,       
+    houseFinished:false,     
     isStandForUser:false,
-    isGameStarted:false, 
-    isBlackJack:false, // those are derivative state, not a good practice. 
-    cardRemaining:54
+    isGameStarted:false,  
+    cardRemaining:54 // initial value, avoid reshuffled before creating new deck. 
   }
   
-  
+  // make a new deck and update state with the deckId for all subsequence draw or shuffle
   async componentDidMount(){       
     const response = await fetch(
       `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6`
@@ -33,33 +29,18 @@ class GameFrame extends React.Component {
                     cardRemaining:Number(jsonData.remaining)})        
   }
 
- 
-    checkBlackJack=(card_1,card_2)=>{      
-      if(card_1+card_2===21){
-        this.setState({isBlackJack:true})
-        alert('blackJack') 
-      }
-    }
-
+// reset state after each deal is invoked
     resetGameState=()=>{
       this.setState({
         userCardData:[],
-        houseCardData:[],
-        // isBusted:false,
-        // houseValue:0,                   
+        houseCardData:[],                
         isStandForUser:false,
         isGameStarted:false,
-        isBlackJack:false,
         houseFinished:false
       })
     }
 
-    onCheckIsAce=(card)=>{
-      if(card===11){
-        this.setState({userAceCount:this.state.userAceCount+1})
-      }
-    }
-
+// handler starts each round of deal. 
    onStartGame = async (deckId)=>{    
     if(this.state.isGameStarted){
       this.resetGameState()
@@ -67,15 +48,9 @@ class GameFrame extends React.Component {
     try{
       const jsonDataUser = await cardApiServices.drawCards(this.state.deckId,2)
       const jsonDataHouse = await cardApiServices.drawCards(this.state.deckId,1)    
-      // const userCard_1 = cardApiServices.carValueHandle(jsonDataUser.cards[0].value)
-      // const userCard_2 = cardApiServices.carValueHandle(jsonDataUser.cards[1].value)
-         
-      // this.onCheckIsAce(userCard_1)
-      // this.onCheckIsAce(userCard_2)
       this.setState({
         userCardData:jsonDataUser.cards,
         houseCardData:jsonDataHouse.cards,     
-        // houseValue:houseInitialValue,
         cardRemaining:Number(jsonDataHouse.remaining),
         isGameStarted:true})
     }catch(error){
@@ -84,15 +59,6 @@ class GameFrame extends React.Component {
     }
   }
 
- 
-  onCheckBusted= async (cardValue)=>{
-    const currentValue = cardApiServices.calculateCardValue(this.state.userCardData)
-    const maxValue = currentValue+cardValue-(cardApiServices.aceCount(this.state.userCardData)*10)
-    
-    if(maxValue>21){
-      this.setState({isStandForUser:true})      
-    }
-  }
   
   userBustHandle=(cardValue,cardData)=>{
     if(cardApiServices.onCheckBusted(cardValue,cardData)){
@@ -100,43 +66,38 @@ class GameFrame extends React.Component {
       
     }
   }
-  
-
+  // draw one card handler for player
   onDrawOneCardUser = async ()=>{  
     try{
       const jsonData = await cardApiServices.drawCards(this.state.deckId,1)
-    const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
-    console.log(cardValue,'test card value')
-    // this.userBustHandle(cardValue,this.state.userCardData)
-    this.userBustHandle(cardValue,this.state.userCardData)
-    this.setState({
+      const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
+    
+      this.userBustHandle(cardValue,this.state.userCardData)
+      this.setState({
         userCardData:this.state.userCardData.concat(jsonData.cards),
         cardRemaining:Number(jsonData.remaining)
       })
     }
     catch(error){
       console.log(error)
-    } 
-    
-               
-    }
+    }                
+  }
 
   onDrawOneCardHouse = async ()=>{
     const jsonData = await cardApiServices.drawCards(this.state.deckId,1)
-    // const cardValue = cardApiServices.carValueHandle(jsonData.cards[0].value)
-    console.log(jsonData.cards,'test card value inside on draw house')
+
     this.setState({
       houseCardData:this.state.houseCardData.concat(jsonData.cards),
-      // houseValue:this.state.houseValue+cardValue
     }) 
-    console.log(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10,'test inside house draw')
+    // console.log(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10,'test inside house draw')
+    // if house card values is greater than 16, update state house is finished. 
     if(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10>=16){
       console.log(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10,'ran house finished')
       this.setState({houseFinished:true})
     }
-    }
+  }
   
-
+  // handler for updating user stand
   onStand = ()=>{   
     this.setState({isStandForUser:true})               
   }
@@ -145,21 +106,18 @@ class GameFrame extends React.Component {
     this.setState({chip:chip})
   }
 
-  onHouseFinished=()=>{
-    this.setState({houseFinished:true})
-  }
+  // onHouseFinished=()=>{
+  //   this.setState({houseFinished:true})
+  // }
  
   render(){
-    console.log(this.state,'test state') 
-    console.log(this.props,'test props')   
+    console.log(this.state,'test state')   
     if(this.state.cardRemaining<10){
       cardApiServices.shuffleCard(this.state.deckId)
     }
     return (
-      <div className="App">
-    
-          {/* <button onClick={this.onStartGame}>Deal</button> */}
-          <div className='game-frame'>
+      <div className="App">          
+      <div className='game-frame'>
         <UserBox                     
           drawOneCard={this.onDrawOneCardUser}         
           onStand = {this.onStand}          
@@ -171,10 +129,8 @@ class GameFrame extends React.Component {
 
           drawOneCard={this.onDrawOneCardHouse}
           isUserStand = {this.state.isStandForUser}
-          // CardImages = {this.state.houseCardImage}
-          // houseValue = {this.state.houseValue}
           houseCardData={this.state.houseCardData}
-          onHouseFinished={this.onHouseFinished}
+          // onHouseFinished={this.onHouseFinished}
           />          
           </div>
           <UserBetControl 

@@ -2,10 +2,7 @@ import React from 'react'
 import cardApiServices from '../Services/CardService'
 
 class HouseBox extends React.Component{
-    state={
-        houseValue:cardApiServices.calculateCardValue(this.props.houseCardData),   
-        values:[]     
-    }
+
     renderUserCard=(cardData)=>{
         return cardData.map((card,index)=>
           <div key = {index} 
@@ -23,76 +20,40 @@ class HouseBox extends React.Component{
           return(                       
             <h2>{userValue}/{userValue-aceCount*10}</h2>
           )
-        }else{
+        }
+        else{
           return <h2>{userValue}</h2>
         }
       }
 
-      handleHouseDraw=()=>{
-        console.log('handle house draw') 
-        
-        
-                
-                this.props.drawOneCard()
-                // value+=cardApiServices.calculateCardValue(this.props.houseCardData)
-                
-           
-            
-        
-              
-        
-        // if(value<21){
-        //     this.props.drawOneCard()
-        //     value+=cardApiServices.calculateCardValue(this.props.houseCardData)
-        // }                 
+      handleHouseDraw=()=>{                                        
+        this.props.drawOneCard()
       }
+
       checkBusted =()=>{
           return(cardApiServices.calculateCardValue(this.props.houseCardData))
       }
-      nothing=()=>{
 
-      }
-      
 
-      render(){
-           const houseData = this.props.houseCardData
-          const houseValue = cardApiServices.calculateCardValue(houseData)          
-          const aceCount = cardApiServices.aceCount(houseData)
+    render(){
+        const houseData = this.props.houseCardData
+        const houseValue = cardApiServices.calculateCardValue(houseData)          
+        const aceCount = cardApiServices.aceCount(houseData)                
         
-          //   console.log(cardApiServices.carValueHandle(houseData[houseData.length]),'test last value')
-        //   console.log(houseValue,'first house value')
-        // console.log(this.state.houseValue,'first house value')
-        // this.props.isUserStand && 
-        
-        // console.log((houseData.length&&cardApiServices.calculateCardValue(houseData[houseData.length-1])),'test before draw house')
-        // console.log(houseValue<16,'test true value')
-        console.log(houseData,'test data')
-        console.log(houseValue-(aceCount*10),'before')
         if(this.props.isUserStand&&((houseValue-(aceCount*10))<16)){
-            console.log(houseValue-(aceCount*10),'after')
-            
-            this.handleHouseDraw()
-           
+            // console.log(houseValue-(aceCount*10),'after')            
+            this.handleHouseDraw()           
         }
         
-        // else{
-        //     this.props.onHouseFinished()
-        // }
-        // ((this.props.isUserStand&&(houseValue-(aceCount*10)))<16)
-        // ?this.handleHouseDraw():this.props.onHouseFinished()
         
         return(
-          <div className='house table-box' >
-              {/* <div className='head-bar'>
-              <h2>Dealer</h2>
-              {this.renderValue(houseValue,aceCount)}
-              </div> */}
+          <div className='house table-box' >        
             <div className='all-cards-container'>
                 {this.renderUserCard(houseData)}
             </div>
           </div>
         )
       }
-}
+    }
 
 export default HouseBox
