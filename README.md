@@ -22,9 +22,40 @@ I will plan to implement the following additonal features.
 
 ## Snapshots of the game
 
-!['src/assets/snapshot/landing.png']
+<h3>Homepage</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/landing.png' alt='landing' width='600px' />
+</div>
 
+<h3>A new game</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/newGame.png' alt='landing' width='600px' />
+</div>
 
+<h3>Player Hits</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/hitting.png' alt='landing' width='600px' />
+</div>
+
+<h3>Player Busted</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/bust2.png' alt='landing' width='600px' />
+</div>
+
+<h3>Player Got BlackJacks</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/blackjack.png' alt='landing' width='600px' />
+</div>
+
+<h3>Player Won</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/playerWin.png' alt='landing' width='600px' />
+</div>
+
+<h3>About Page</h3>
+<div style="display: flex; justify-content: center;">
+<img src='/src/assets/snapshot/about.png' alt='landing' width='600px' />
+</div>
 
 ## Technology Stack
 
