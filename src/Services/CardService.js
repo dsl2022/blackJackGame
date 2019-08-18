@@ -75,7 +75,18 @@ const cardApiServices={
         }
       else{
         return cardApiServices.calculateCardValue(cardData)>21}
-      }      
+      },
+    
+    calcualteBetTotal(data){
+      if(data === undefined || data.length === 0){
+        return
+      }else{
+        let count=0
+        data.forEach(num=>count+=num)
+        return count
+      }
+    }
+
     }
 
 export default cardApiServices;

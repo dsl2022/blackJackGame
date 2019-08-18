@@ -1,13 +1,29 @@
 .landing-page{
+    
+    
     background-image:url("https://wallpapercave.com/wp/wp2180229.jpg");
     min-height:100vh;
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
+    height: 100%;
+    
 }
 
-.landing-play-btn{
-    color:white;
-    padding: 1em 1.5em;
-    text-decoration: none;
-    background-color:#DFA851;
+.landing-btn{
+    font-size:25px;
+}
+
+.landing-btn-box{   
+    width:100%;     
+    position: absolute;
+    top:20%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    
+}
+@media(max-width:768px){
+.landing-page{
+    
+    height: 100%;
+}
 }

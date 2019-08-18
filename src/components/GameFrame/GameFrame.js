@@ -13,7 +13,8 @@ class GameFrame extends React.Component {
     userCardData:[],
     houseCardData:[],
     deckId:'',
-    houseFinished:false,     
+    houseFinished:false,
+    houseFinishedForChip:false,     
     isStandForUser:false,
     isGameStarted:false,  
     cardRemaining:54 // initial value, avoid reshuffled before creating new deck. 
@@ -32,11 +33,13 @@ class GameFrame extends React.Component {
 // reset state after each deal is invoked
     resetGameState=()=>{
       this.setState({
+        chipRecord:[],
         userCardData:[],
         houseCardData:[],                
         isStandForUser:false,
         isGameStarted:false,
-        houseFinished:false
+        houseFinished:false,
+        houseFinishedForChip:false
       })
     }
 
@@ -89,11 +92,11 @@ class GameFrame extends React.Component {
     this.setState({
       houseCardData:this.state.houseCardData.concat(jsonData.cards),
     }) 
-    // console.log(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10,'test inside house draw')
+    
     // if house card values is greater than 16, update state house is finished. 
     if(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10>=16){
       console.log(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10,'ran house finished')
-      this.setState({houseFinished:true})
+      this.setState({houseFinished:true,houseFinishedForChip:true})
     }
   }
   
@@ -106,9 +109,9 @@ class GameFrame extends React.Component {
     this.setState({chip:chip})
   }
 
-  // onHouseFinished=()=>{
-  //   this.setState({houseFinished:true})
-  // }
+  onUpdateHouseFinishForChip=()=>{
+    this.setState({houseFinishedForChip:false})
+  }
  
   render(){
     console.log(this.state,'test state')   
@@ -133,7 +136,7 @@ class GameFrame extends React.Component {
           // onHouseFinished={this.onHouseFinished}
           />          
           </div>
-          <UserBetControl 
+        <UserBetControl 
           drawOneCard={this.onDrawOneCardUser} 
             userCardData={this.state.userCardData}
             houseCardData={this.state.houseCardData}
@@ -144,6 +147,10 @@ class GameFrame extends React.Component {
             onStand = {this.onStand}          
             isGameStarted = {this.state.isGameStarted}  
             onStartGame = {this.onStartGame}
+            chipRecord = {this.state.chipBetRecord}
+            onUpdateHouseFinish={this.onUpdateHouseFinish}
+            onUpdateHouseFinishForChip={this.onUpdateHouseFinishForChip}
+            houseFinishedForChip={this.state.houseFinishedForChip}
           />
           
       </div>

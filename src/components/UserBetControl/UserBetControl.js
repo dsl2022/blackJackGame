@@ -1,12 +1,18 @@
 import React from 'react'
 import cardApiServices from '../../Services/CardService'
+import {Link} from 'react-router-dom'
 import chip_20 from '../../assets/chip-20.png'
 import chip_50 from '../../assets/chip-50.png'
 import chip_100 from '../../assets/chip-100.png'
 import double from '../../assets/double-down.png'
 import './UserBetControl.css'
 class WinnerDisplay extends React.Component{
-  
+  state={
+    chip:500,
+    chipRecord:[0,0],
+    bust:false
+    
+  }
   // when user card value is greater than 21, it returns true as a way to disable buttons.     
   forcedStand=(userValue,aceCount)=>{
     return (userValue-aceCount*10>21)    
@@ -21,8 +27,23 @@ class WinnerDisplay extends React.Component{
   renderButton=(userValue,aceCount)=>{  
         return(
           <>
-            <button className= 'control-btn' disabled={ this.onBlackJack() || this.forcedStand(userValue,aceCount) || this.props.isUserStand} onClick={this.props.drawOneCard}>Hit</button>
-            <button className='control-btn' disabled = { this.onBlackJack() || this.forcedStand(userValue,aceCount)||this.props.isUserStand} onClick={this.onStand}>Stand</button>
+            <button 
+              className= 'control-btn' 
+              disabled={ this.onBlackJack() 
+                || this.forcedStand(userValue,aceCount) 
+                || this.props.isUserStand 
+                || this.state.chip<20} 
+              onClick={this.props.drawOneCard}>
+                  Hit
+            </button>
+            <button 
+              className='control-btn' 
+              disabled = { this.onBlackJack() 
+                || this.forcedStand(userValue,aceCount)
+                ||this.props.isUserStand} 
+              onClick={this.onStand}>
+                  Stand
+            </button>
             {/* <button disabled={!this.props.isSplit} onClick={this.props.isSplitHandle}>Split</button> */}
           </>
 
@@ -42,14 +63,72 @@ class WinnerDisplay extends React.Component{
       return <h2>{userValue}</h2>
         }
       }
-  
-  
+  handleChip=(e)=>{
+    this.setState({
+      chipRecord:
+      [...this.state.chipRecord,Number(e.target.value)]
+  })}
+
+  handleDouble=()=>{
+    this.setState({
+      double:true
+    })
+  }
+
+ 
+  onUpdateChip=(bettingTotal,userValue,userAceCount,houseValue,houseAceCount)=>{
+    
+    console.log(((this.props.isHouseFinished
+      &&(userValue-userAceCount*10)>(houseValue-houseAceCount*10))
+      ||(houseValue-houseAceCount*10)>21),'test true----')
+    console.log((this.props.isHouseFinished
+      &&(userValue-userAceCount*10)<(houseValue-houseAceCount*10)
+      &&(houseValue-houseAceCount*10)<=21),'test true lost-----')
+    if(((this.props.isHouseFinished
+      &&(userValue-userAceCount*10)>(houseValue-houseAceCount*10))
+      ||(houseValue-houseAceCount*10)>21)){
+        let newChipTotal = this.state.chip+bettingTotal  
+        console.log(newChipTotal,'test new chiptotal win') 
+       this.setState({chip:newChipTotal,chipRecord:[0,0]})
+    }
+    else if((this.props.isHouseFinished
+      &&(userValue-userAceCount*10)<(houseValue-houseAceCount*10)
+      &&(houseValue-houseAceCount*10)<=21)||userValue-userAceCount*10>21){
+        let newChipTotal = this.state.chip-bettingTotal   
+        console.log(newChipTotal,'test new chiptotal lost',this.state.chip,bettingTotal) 
+        this.setState({chip:newChipTotal,chipRecord:[0,0],bust:true})
+    }else{
+      console.log(bettingTotal)
+    }
+    
+    this.props.onUpdateHouseFinishForChip()
+        
+    // let newChipTotal = this.props.chip-betTotal
+    // this.props.onUpdateChip(newChipTotal)
+  }
+
+  onHandleDeal=()=>{
+    this.setState({bust:false,chipRecord:[0,0]})
+    this.props.onStartGame()
+
+  }
+
+  onReload=()=>{
+    window.location.reload(true)  
+  }
+
   render(){
     let userValue = cardApiServices.calculateCardValue(this.props.userCardData)
     let houseValue = cardApiServices.calculateCardValue(this.props.houseCardData)
     const userAceCount = cardApiServices.aceCount(this.props.userCardData)
-    const houseAceCount = cardApiServices.aceCount(this.props.houseCardData)
-
+    const houseAceCount = cardApiServices.aceCount(this.props.houseCardData)    
+    const bettingTotal = cardApiServices.calcualteBetTotal(this.state.chipRecord)
+    // console.log(this.props.houseFinishedForChip,'test house finish for chip')
+    if(this.props.houseFinishedForChip||(!this.state.bust&&userValue-userAceCount*10>21)){
+      this.onUpdateChip(bettingTotal,userValue,userAceCount,houseValue,houseAceCount)
+      // bettingTotal,userValue,userAceCount,houseValue,houseAceCount
+    }
+    
     return(
       <div className='winner-display-container'>
         <div className='score-display'>
@@ -58,10 +137,49 @@ class WinnerDisplay extends React.Component{
                </div>
 
           <div className='chips-box'>
-            <input type="image" alt ='' src={chip_20} name="test" class="btTxt submit" id="chip" /> 
-            <input type="image" alt ='' src={chip_50} name="test" class="btTxt submit" id="chip" />  
-            <input type="image" alt ='' src={chip_100} name="test" class="btTxt submit" id="chip" />  
-            <input type="image" alt ='' src={double} name="test" class="btTxt submit" id="chip-double" />  
+            <input 
+              disabled={!this.props.isGameStarted || this.state.chip<20}
+              onClick={this.handleChip}
+              defaultValue='20'
+              type="image" 
+              alt ='chip button' 
+              src={chip_20} 
+              name="chip-button" 
+              className="btTxt submit" 
+              id="chip" 
+              /> 
+            <input 
+              disabled={!this.props.isGameStarted || this.state.chip<20}
+              onClick={this.handleChip}
+              defaultValue='50'
+              type="image" 
+              alt ='chip button' 
+              src={chip_50} 
+              name="chip-button" 
+              className="btTxt submit" 
+              id="chip" 
+            />  
+            <input 
+              disabled={!this.props.isGameStarted || this.state.chip<20}
+              onClick={this.handleChip}
+              defaultValue='100'
+              type="image" 
+              alt ='chip button' 
+              src={chip_100} 
+              name="chip-button" 
+              className="btTxt submit" 
+              id="chip" 
+            />  
+            <input 
+              disabled={!this.props.isGameStarted || this.state.chip<20}
+              onClick={this.handleDouble}
+              type="image" 
+              alt ='' 
+              src={double} 
+              name="test" 
+              className="btTxt submit" 
+              id="chip-double" 
+            />  
           </div>
 
           <div className='dealer score-box'>               
@@ -69,17 +187,34 @@ class WinnerDisplay extends React.Component{
           </div>
         </div>
         <div className='chip-display'>
-          <h2>Chip total: </h2> <h2>{this.props.chip}</h2>
+          <div className='chip-total'>
+            <h2>Chip total: {this.state.chip} </h2> 
+          </div>
+          <div className='bet-total'>
+            <h2>Your bet: {bettingTotal}</h2> 
+          </div>
         </div>
         <div className='winner-buster-display'>
           {userValue-userAceCount*10>21&&'Bust, you lost'}
-          {(this.props.isHouseFinished&&(userValue-userAceCount*10)>(houseValue-houseAceCount*10))&&'You won'}
+          {((this.props.isHouseFinished&&(userValue-userAceCount*10)>(houseValue-houseAceCount*10))||(houseValue-houseAceCount*10)>21)&&'You won'}
           {(this.props.isHouseFinished&&(userValue-userAceCount*10)<(houseValue-houseAceCount*10)&&(houseValue-houseAceCount*10)<=21)&&'Dealer Won'}
           {(this.props.isHouseFinished&&(userValue-userAceCount*10)===(houseValue-houseAceCount*10))&&'Push'}                
-          {this.onBlackJack() && 'Black Jack! You Won'}                
+          {this.onBlackJack() && 'Black Jack! You Won'}  
+          {this.state.chip<20 && 'You need to load more chips, Start a new game!'} 
+                     
         </div>   
         <div className='user-btn-container'> 
-          <button className='control-btn' onClick={this.props.onStartGame}>Deal</button>
+          <Link className='control-btn' to='/'>Exit</Link>
+          <button 
+            onClick={this.onReload}
+            className='control-btn'>
+            Restart
+          </button>
+          <button 
+            disabled={this.state.chip<20}
+            className='control-btn' 
+            onClick={this.onHandleDeal}>Deal
+          </button>
             {this.props.isGameStarted && this.renderButton(userValue,userAceCount)}      
           </div>
         </div>

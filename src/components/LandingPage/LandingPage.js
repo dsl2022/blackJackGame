@@ -6,9 +6,18 @@ class LandingPage extends React.Component{
     render(){
         return(
             <div className='landing-page'>
-                     <Link className='landing-play-btn' to='/blackjack'>
-                         Play
-                         </Link>       
+            
+                <div className='landing-btn-box'>
+                    <Link className='landing-btn control-btn' to='/blackjack'>
+                        Play
+                    </Link>     
+                    <Link className='landing-btn control-btn' to='/rule'>
+                        Rule
+                    </Link> 
+                    <Link className='landing-btn control-btn' to='/about'>
+                        About
+                    </Link>   
+                </div>
             </div>
         )
     }

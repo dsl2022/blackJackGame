@@ -80,8 +80,11 @@ input[type='image'] {
     position:relative;
 	top:1px;
 }
-
-@media(max-width:375px){
+.winner-buster-display{
+    font-size:25px;
+    padding:10px;
+}
+@media(max-width:768px){
     .score-display{
         flex-direction: row;
         margin:auto 10px;
@@ -91,9 +94,10 @@ input[type='image'] {
     }
 
     .winner-display-container{        
-        padding:5px;
+        padding:10px;
         font-size:10px;
-        margin-bottom:10px;
+        
+        
     }
     .winner-buster-display{
         font-size:20px;
