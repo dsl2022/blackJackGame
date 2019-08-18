@@ -147,9 +147,10 @@ class WinnerDisplay extends React.Component{
     return(
       <div className='winner-display-container'>
         <div className='score-display'>
-          <div className='play score-box'>               
-            <h2>You: </h2> {this.renderValue(userValue,userAceCount)}
-               </div>
+          <div className='dealer score-box'>               
+            <h2>Dealer: </h2> {this.renderValue(houseValue,houseAceCount)}
+          </div>
+          
 
           <div className='chips-box'>
             <input 
@@ -197,8 +198,8 @@ class WinnerDisplay extends React.Component{
             />   */}
           </div>
 
-          <div className='dealer score-box'>               
-            <h2>Dealer: </h2> {this.renderValue(houseValue,houseAceCount)}
+          <div className='player score-box'>               
+            <h2>You: </h2> {this.renderValue(userValue,userAceCount)}
           </div>
         </div>
         <div className='chip-display'>

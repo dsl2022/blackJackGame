@@ -13,9 +13,18 @@ If I were to redo the project, I would definitely try to design a better state, 
 ## Additional features coming 
 I will plan to implement the following additonal features.
 
-* Background music(including on and off switch)
+* Betting Validator(currently betting is not mandatory)
+* Deal button validator
 * Split option
+* Background music(including on and off switch)
 * Change background picture
+
+
+## Snapshots of the game
+
+!['./src/assets/snapshot/landing.png']
+
+
 
 ## Technology Stack
 

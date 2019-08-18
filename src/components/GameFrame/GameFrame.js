@@ -140,6 +140,13 @@ class GameFrame extends React.Component {
     return (
       <div className="App">          
       <div className='game-frame'>
+        <HouseBox
+
+          drawOneCard={this.onDrawOneCardHouse}
+          isUserStand = {this.state.isStandForUser}
+          houseCardData={this.state.houseCardData}
+          // onHouseFinished={this.onHouseFinished}
+        />          
         <UserBox                     
           drawOneCard={this.onDrawOneCardUser}         
           onStand = {this.onStand}          
@@ -147,13 +154,7 @@ class GameFrame extends React.Component {
           userCardData = {this.state.userCardData}
           isStand = {this.state.isStandForUser}
         />
-        <HouseBox
-
-          drawOneCard={this.onDrawOneCardHouse}
-          isUserStand = {this.state.isStandForUser}
-          houseCardData={this.state.houseCardData}
-          // onHouseFinished={this.onHouseFinished}
-          />          
+        
           </div>
         <UserBetControl 
           drawOneCard={this.onDrawOneCardUser} 
