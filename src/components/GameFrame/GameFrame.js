@@ -54,16 +54,7 @@ class GameFrame extends React.Component {
       
       suit: "BACK",
       value: "0"}
-      const houseCardBack2 = {code: "9C",
-      image: "https://deckofcardsapi.com/static/img/9C.png",
-      images: {png: "https://deckofcardsapi.com/static/img/9C.png", svg: "https://deckofcardsapi.com/static/img/9C.svg"},
-      suit: "CLUBS",
-      value: "ACE"}
-      const houseCardBack3 = {code: "9C",
-      image: "https://deckofcardsapi.com/static/img/9C.png",
-      images: {png: "https://deckofcardsapi.com/static/img/9C.png", svg: "https://deckofcardsapi.com/static/img/9C.svg"},
-      suit: "CLUBS",
-      value: "JACK"}
+      
       this.setState({
         userCardData:jsonDataUser.cards,
         // userCardData:[houseCardBack2,houseCardBack3],     
