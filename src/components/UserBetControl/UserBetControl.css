@@ -5,7 +5,7 @@
     flex-direction: column;
     background-color:black;
     height:100%;
-    padding:55px;
+    padding:20px;
 }
 
 .user-btn-container{
@@ -30,10 +30,15 @@ input[type='image'] {
 
 .chip-display{
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
+    width:100%;
+    font-size: 25px;
 }
-
+.chip-display-text{
+    font-family: 'Orbitron', sans-serif;
+    font-size: 25px;
+}
 .chips-box{
     padding:10px;
 }

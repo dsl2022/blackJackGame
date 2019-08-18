@@ -1,0 +1,32 @@
+.game-rule{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url("https://bps.hs.llnwd.net/e2/v2/common/Common/Common/neutral/image/2017/03/game.netentBlackjack3Hand.backgroundimage_v3.jpg");
+    min-height:100vh;
+    background-size: 100% 100%;
+    background-position: center;
+    height: 100%;
+    
+}
+
+
+.rule-intro a{
+    color:gray;
+}
+
+.rule-intro {
+    color:rgb(255, 255, 255);
+    font-size: 2rem;
+   
+    margin:5rem 30px;
+}
+
+@media(max-width:768px){
+    
+
+    .rule-intro{
+        font-size: 1rem;
+        margin:1rem 30px;
+    }
+    }

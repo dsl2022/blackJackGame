@@ -1,0 +1,34 @@
+
+.home-link{
+    margin:2rem;
+}
+
+.about{
+    
+    background-image:url("https://images5.alphacoders.com/449/thumb-1920-449376.jpg");
+    min-height:100vh;
+    background-size: 100% 100%;
+    background-position: center;
+    height: 100%;
+    
+}
+
+.about-intro a{
+    color:gray;
+}
+
+.about-intro {
+    color:gray;
+    font-size: 2rem;
+    margin:5rem 30px;
+}
+
+@media(max-width:768px){
+    .About-page{        
+        height: 100%;
+    }
+
+    .about-intro{
+        font-size: 1.2rem;
+    }
+    }

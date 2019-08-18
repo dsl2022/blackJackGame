@@ -2,8 +2,11 @@
   text-align: center;
   background:#10290F;
   
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
+body{
+  background:black;
+}
 
  

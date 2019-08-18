@@ -3,6 +3,7 @@ import UserBox from '../userBox'
 import HouseBox from '../HouseBox'
 import cardApiServices from '../../Services/CardService'
 import UserBetControl from '../UserBetControl/UserBetControl';
+import pokerBack from '../../assets/poker-back.png'
 import './GameFrame.css'
 
 
@@ -48,9 +49,25 @@ class GameFrame extends React.Component {
     try{
       const jsonDataUser = await cardApiServices.drawCards(this.state.deckId,2)
       const jsonDataHouse = await cardApiServices.drawCards(this.state.deckId,1)    
+      const houseCardBack = {code: "9C",
+      image: pokerBack,
+      
+      suit: "BACK",
+      value: "0"}
+      const houseCardBack2 = {code: "9C",
+      image: "https://deckofcardsapi.com/static/img/9C.png",
+      images: {png: "https://deckofcardsapi.com/static/img/9C.png", svg: "https://deckofcardsapi.com/static/img/9C.svg"},
+      suit: "CLUBS",
+      value: "ACE"}
+      const houseCardBack3 = {code: "9C",
+      image: "https://deckofcardsapi.com/static/img/9C.png",
+      images: {png: "https://deckofcardsapi.com/static/img/9C.png", svg: "https://deckofcardsapi.com/static/img/9C.svg"},
+      suit: "CLUBS",
+      value: "JACK"}
       this.setState({
         userCardData:jsonDataUser.cards,
-        houseCardData:jsonDataHouse.cards,     
+        // userCardData:[houseCardBack2,houseCardBack3],     
+        houseCardData:[houseCardBack,...jsonDataHouse.cards],     
         cardRemaining:Number(jsonDataHouse.remaining),
         isGameStarted:true})
     }catch(error){
@@ -91,9 +108,14 @@ class GameFrame extends React.Component {
     }) 
     
     // if house card values is greater than 16, update state house is finished. 
-    if(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10>=16){
-      console.log(cardApiServices.calculateCardValue(this.state.houseCardData)-cardApiServices.aceCount(this.state.houseCardData)*10,'ran house finished')
-      this.setState({houseFinished:true,houseFinishedForChip:true})
+    if(cardApiServices.calculateCardValue(this.state.houseCardData)
+    -cardApiServices.aceCount(this.state.houseCardData)*10>=16){      
+      // remove the poker-back when house finish drawing cards.
+      this.state.houseCardData.shift()
+      this.setState({
+        houseFinished:true,
+        houseFinishedForChip:true,
+        })
     }
   }
   
