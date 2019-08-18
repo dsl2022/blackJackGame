@@ -6,8 +6,7 @@
     min-height:100vh;
     background-size: 100% 100%;
     background-position: center;
-    height: 100%;
-    
+    height: 100%;  
 }
 
 
@@ -22,11 +21,9 @@
     margin:5rem 30px;
 }
 
-@media(max-width:768px){
-    
-
+@media(max-width:768px){    
     .rule-intro{
         font-size: 1rem;
         margin:1rem 30px;
-    }
+        }
     }

@@ -132,8 +132,7 @@ class GameFrame extends React.Component {
     this.setState({houseFinishedForChip:false})
   }
  
-  render(){
-    console.log(this.state,'test state')   
+  render(){  
     if(this.state.cardRemaining<10){
       cardApiServices.shuffleCard(this.state.deckId)
     }

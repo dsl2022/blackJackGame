@@ -3,9 +3,6 @@ import cardApiServices from '../Services/CardService'
 
 
 class UserBox extends React.Component{
-
-  
-
   forcedStand=(userValue,aceCount)=>{
     return (userValue-aceCount*10>21)    
   }
@@ -28,9 +25,7 @@ class UserBox extends React.Component{
     this.props.onStand()   
   }
 
-  renderButton=(userValue,aceCount)=>{
-    // const userValue = cardApiServices.calculateCardValue(this.props.userCardData);
-    // console.log(Value,'test user value')
+  renderButton=(userValue,aceCount)=>{    
     if(this.forcedStand()){
       this.onStand()
     }
@@ -46,23 +41,11 @@ class UserBox extends React.Component{
   nothing=()=>{}
 
   render(){    
-    console.log(this.props.userCardData,this.props.userCardData[0],'black jack card test')
-    console.log(cardApiServices.checkBlackJack(this.props.userCardData[0],this.props.userCardData[1]),'test black jack')
     return(
-      <div className='user table-box' >
-        {/* <div className='head-bar'>
-          <h2>You</h2>
-          
-          {this.renderValue(userValue,aceCount)}
-        </div> */}
-        
-             
-        <div className='all-cards-container'>
-        {this.renderUserCard(this.props.userCardData)}   
-      </div>
-        
-          {/* {this.props.isGameStarted && this.renderButton(userValue,aceCount)} */}
-        
+        <div className='user table-box' >                     
+          <div className='all-cards-container'>
+          {this.renderUserCard(this.props.userCardData)}   
+        </div>                    
       </div>
     )
   }

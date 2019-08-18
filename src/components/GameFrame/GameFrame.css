@@ -6,70 +6,66 @@
   }
   
 
-
-
-
-  .game-frame {
+.game-frame {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+  background-image:url("https://i.imgur.com/iZrhFim.png");
+  min-height:80vh;
+  background-size: cover;
+  background-position: center;
+}
+  
+.all-cards-container{
+  display:flex;
+  position:relative;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin:auto;
+  flex-shrink:3;
+}
+  
+.head-bar{
+  justify-content: center;
+  align-items: center;
+  color:white;
+  display:flex;
+  flex-shrink: 1;
+  height:200px;
+}
+  
+.card-container{
+  width:100px;
+}
+  
+  
+@media(max-width:768px){
+  .game-frame{
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
+    min-height:70vh;
     justify-content: space-around;
-    text-align: center;
-    background-image:url("https://i.imgur.com/iZrhFim.png");
-    min-height:80vh;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .all-cards-container{
-    display:flex;
-    position:relative;
-    justify-content: center;
     align-items: center;
-    flex-direction: row;
-    margin:auto;
-    flex-shrink:3;
   }
-  
- .head-bar{
-   justify-content: center;
-   align-items: center;
-   color:white;
-   display:flex;
-   flex-shrink: 1;
-   height:200px;
+.all-cards-container{
+  margin:0;
+}
+
+.table-box{
+  display:flex;
+  flex-direction: column;  
+  }
+    
+.card-container{
+  width:30px;
  }
   
-  .card-container{
-    width:100px;
+img{
+  width: 80px;
   }
-  
-  
-  @media(max-width:768px){
-    .game-frame{
-      display:flex;
-      flex-direction: column;
-      min-height:70vh;
-      justify-content: space-around;
-      align-items: center;
-    }
-  .all-cards-container{
-    margin:0;
-  }
-    .table-box{
-      display:flex;
-      flex-direction: column;
-     
-   
-      
-    }
-    .card-container{
-      width:30px;
-    }
-  
-    img{
-      width: 80px;
-    }
     
-  }
+}
 
  

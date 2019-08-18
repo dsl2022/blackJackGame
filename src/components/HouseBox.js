@@ -40,8 +40,7 @@ class HouseBox extends React.Component{
         const houseValue = cardApiServices.calculateCardValue(houseData)          
         const aceCount = cardApiServices.aceCount(houseData)                
         
-        if(this.props.isUserStand&&((houseValue-(aceCount*10))<16)){
-            // console.log(houseValue-(aceCount*10),'after')            
+        if(this.props.isUserStand&&((houseValue-(aceCount*10))<16)){                
             this.handleHouseDraw()           
         }
         
