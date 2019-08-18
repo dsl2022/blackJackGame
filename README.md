@@ -14,9 +14,15 @@ If I were to redo the project, I would definitely try to design a better state, 
 I will plan to implement the following additonal features.
 
 * Betting Validator(currently betting is not mandatory)
+
 * Deal button validator
+
 * Split option
+
+* Data loading spinner(for slow internet speed)
+
 * Background music(including on and off switch)
+
 * Change background picture
 
 

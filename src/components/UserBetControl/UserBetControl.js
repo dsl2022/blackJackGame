@@ -82,15 +82,7 @@ class WinnerDisplay extends React.Component{
   }
 
  
-  onUpdateChip=(bettingTotal,userValue,userAceCount,houseValue,houseAceCount)=>{
-    
-    console.log(((this.props.isHouseFinished
-      &&(userValue-userAceCount*10)>(houseValue-houseAceCount*10))
-      ||(houseValue-houseAceCount*10)>21),'test true----')
-    console.log((this.props.isHouseFinished
-      &&(userValue-userAceCount*10)<(houseValue-houseAceCount*10)
-      &&(houseValue-houseAceCount*10)<=21),'test true lost-----')
-    // console.log(this.onBlackJack(),'test blackjack ---------')
+  onUpdateChip=(bettingTotal,userValue,userAceCount,houseValue,houseAceCount)=>{    
     if(this.onBlackJack()){
       let newChipTotal = this.state.chip+50                
        this.setState({chip:newChipTotal,chipRecord:[0,0],blackJack:this.state.blackJack+1})
@@ -108,7 +100,7 @@ class WinnerDisplay extends React.Component{
         let newChipTotal = this.state.chip-bettingTotal           
         this.setState({chip:newChipTotal,chipRecord:[0,0],bust:true})
     }else{
-      console.log(bettingTotal)
+      return
     }    
    
     this.props.onUpdateHouseFinishForChip()            
@@ -132,16 +124,13 @@ class WinnerDisplay extends React.Component{
     const userAceCount = cardApiServices.aceCount(this.props.userCardData)
     const houseAceCount = cardApiServices.aceCount(this.props.houseCardData)    
     const bettingTotal = cardApiServices.calcualteBetTotal(this.state.chipRecord)
-    // console.log(this.props.houseFinishedForChip,'test house finish for chip')
    
     if(this.props.houseFinishedForChip||this.onBlackJack()||(!this.state.bust&&userValue-userAceCount*10>21)){
-      this.onUpdateChip(bettingTotal,userValue,userAceCount,houseValue,houseAceCount)
-      // bettingTotal,userValue,userAceCount,houseValue,houseAceCount
+      this.onUpdateChip(bettingTotal,userValue,userAceCount,houseValue,houseAceCount)      
     }
     
     if(!this.state.blackJack){
       this.onBlackJack()
-      console.log(this.state.blackJack,'test state black jack inside')
     }
     
     return(
