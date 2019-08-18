@@ -7,9 +7,7 @@ import './GameFrame.css'
 
 
 class GameFrame extends React.Component {
-  state={
-    chip:500,
-    chipBetRecord:[],
+  state={    
     userCardData:[],
     houseCardData:[],
     deckId:'',
@@ -32,8 +30,7 @@ class GameFrame extends React.Component {
 
 // reset state after each deal is invoked
     resetGameState=()=>{
-      this.setState({
-        chipRecord:[],
+      this.setState({     
         userCardData:[],
         houseCardData:[],                
         isStandForUser:false,
