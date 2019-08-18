@@ -22,7 +22,7 @@ I will plan to implement the following additonal features.
 
 ## Snapshots of the game
 
-!['./src/assets/snapshot/landing.png']
+!['src/assets/snapshot/landing.png']
 
 
 
